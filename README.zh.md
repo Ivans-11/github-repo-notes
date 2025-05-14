@@ -18,11 +18,17 @@
 ## 使用
 
 1. 在GitHub仓库列表页面：
+
+   ![Repository List Demo](img/repo-card-demo.png)
+
    - 每个仓库卡片上会出现一个备注按钮
    - 点击按钮可以添加或编辑备注
    - 备注会显示在仓库卡片上
 
 2. 在仓库详情页面：
+
+   ![Repository Detail Demo](img/repo-page-demo.png)
+   
    - 在页面顶部的操作栏中会出现备注按钮
    - 点击按钮可以添加或编辑备注
    - 备注会显示在仓库描述下方

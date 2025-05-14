@@ -8,8 +8,8 @@
 // @grant        none
 // @icon         https://cdn.simpleicons.org/github/808080
 // @license      MIT
-// @downloadURL https://update.greasyfork.org/scripts/535967/GitHub%20Repo%20Notes.user.js
-// @updateURL https://update.greasyfork.org/scripts/535967/GitHub%20Repo%20Notes.meta.js
+// @downloadURL  https://update.greasyfork.org/scripts/535967/GitHub%20Repo%20Notes.user.js
+// @updateURL    https://update.greasyfork.org/scripts/535967/GitHub%20Repo%20Notes.meta.js
 // ==/UserScript==
 
 (function() {

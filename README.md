@@ -18,11 +18,17 @@ A Tampermonkey script that allows you to add local notes to GitHub repositories
 ## Usage
 
 1. On GitHub repository list page:
+
+   ![Repository List Demo](img/repo-card-demo.png)
+
    - A note button appears on each repository card
    - Click the button to add or edit notes
    - Notes are displayed on the repository card
 
 2. On repository detail page:
+
+   ![Repository Detail Demo](img/repo-page-demo.png)
+
    - A note button appears in the top action bar
    - Click the button to add or edit notes
    - Notes are displayed below the repository description
