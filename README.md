@@ -13,7 +13,7 @@ A Tampermonkey script that allows you to add local notes to GitHub repositories
 
 1. First, install the [Tampermonkey](https://www.tampermonkey.net/) browser extension
 2. Click the following link to install the script:
-   [GitHub Repo Notes](https://raw.githubusercontent.com/Ivans-11/github-repo-notes/main/github-repo-notes.user.js)
+   [GitHub Repo Notes](https://update.greasyfork.org/scripts/535967/GitHub%20Repo%20Notes.user.js)
 
 ## Usage
 

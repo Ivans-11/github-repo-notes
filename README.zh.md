@@ -13,7 +13,7 @@
 
 1. 首先安装 [Tampermonkey](https://www.tampermonkey.net/) 浏览器扩展
 2. 点击以下链接安装脚本：
-   [GitHub Repo Notes](https://raw.githubusercontent.com/Ivans-11/github-repo-notes/main/github-repo-notes.user.js)
+   [GitHub Repo Notes](https://update.greasyfork.org/scripts/535967/GitHub%20Repo%20Notes.user.js)
 
 ## 使用
 
