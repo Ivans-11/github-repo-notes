@@ -8,7 +8,6 @@ A Tampermonkey script that allows you to add local notes to GitHub repositories
 
 - Add and modify notes for repositories in GitHub repository list or detail pages
 - Notes are saved in local storage and invisible to other users
-- Easy repository management and organization
 
 ## Installation
 
