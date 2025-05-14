@@ -233,15 +233,16 @@
             }
         }
 
-        // Note display
+        // Remove the old note display
+        let oldNoteDiv = document.querySelector('.gh-note-display');
+        if (oldNoteDiv) oldNoteDiv.remove();
+        let oldNoteDiv2 = document.querySelector('.gh-note-display2');
+        if (oldNoteDiv2) oldNoteDiv2.remove();
+    
         if (note) {
             // Create the first note display
             let noteDiv = createNoteDisplay(note);
             noteDiv.classList.add('gh-note-display');
-
-            // Remove the old note display
-            let oldNoteDiv = document.querySelector('.gh-note-display');
-            if (oldNoteDiv) oldNoteDiv.remove();
             
             // Find the description
             let description = document.querySelector('.f4.my-3, .f4.my-3.color-fg-muted.text-italic');
@@ -251,11 +252,7 @@
 
             // Create the second note display
             let noteDiv2 = createNoteDisplay(note);
-            noteDiv2.classList.add('gh-note-display2');
-
-            // Remove the old note display
-            let oldNoteDiv2 = document.querySelector('.gh-note-display2');
-            if (oldNoteDiv2) oldNoteDiv2.remove();
+            noteDiv2.classList.add('gh-note-display2');            
 
             if (container) {
                 // Try finding the description
