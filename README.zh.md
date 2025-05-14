@@ -19,7 +19,7 @@
 
 1. 在GitHub仓库列表页面：
 
-   ![Repository List Demo](img/repo-card-demo.png)
+   <p align='center'><img src="img/repo-card-demo.png" alt="Repository List Demo" width="500"/></p>
 
    - 每个仓库卡片上会出现一个备注按钮
    - 点击按钮可以添加或编辑备注
@@ -27,7 +27,7 @@
 
 2. 在仓库详情页面：
 
-   ![Repository Detail Demo](img/repo-page-demo.png)
+   <p align='center'><img src="img/repo-page-demo.png" alt="Repository Detail Demo" width="500"/></p>
    
    - 在页面顶部的操作栏中会出现备注按钮
    - 点击按钮可以添加或编辑备注
