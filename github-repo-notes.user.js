@@ -2,7 +2,7 @@
 // @name         GitHub Repo Notes
 // @name:zh-CN   GitHub 仓库备注工具
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  Add local notes to GitHub repository
 // @description:zh-CN  为 GitHub 仓库添加本地备注
 // @author       Ivans
@@ -181,11 +181,7 @@
         if (!repoFullName) return;
         document.body.dataset.noteEnhanced = '1';
 
-        // Find the button bar
-        let actionsList = document.querySelector('.pagehead-actions');
-        if (!actionsList) return;
-
-        // Create the button
+        // Create the first button
         let note = getNote(repoFullName);
         let btn = createNoteButton(repoFullName, note, function() {
             let newNote = promptNote(note);
@@ -196,30 +192,83 @@
             enhanceRepoPage();
         });
 
-        // Create a new li element
-        let li = document.createElement('li');
-        li.appendChild(btn);
+        // Find the button bar
+        let actionsList = document.querySelector('.pagehead-actions');
+        if (actionsList) {
+            // Create a new li element
+            let li = document.createElement('li');
+            li.appendChild(btn);
 
-        // Avoid duplicate insertion
-        let oldLi = actionsList.querySelector('.gh-note-li');
-        if (oldLi) oldLi.remove();
-        li.classList.add('gh-note-li');
+            // Avoid duplicate insertion
+            let oldLi = actionsList.querySelector('.gh-note-li');
+            if (oldLi) oldLi.remove();
+            li.classList.add('gh-note-li');
 
-        // Add to the button bar
-        actionsList.appendChild(li);
+            // Add to the button bar
+            actionsList.appendChild(li);
+        }
+
+        // Create the second button
+        let btn2 = createNoteButton(repoFullName, note, function() {
+            let newNote = promptNote(note);
+            if (typeof newNote === 'undefined') return;
+            setNote(repoFullName, newNote);
+            // Re-render
+            document.body.dataset.noteEnhanced = '';
+            enhanceRepoPage();
+        });
+
+        // Find the container
+        let container = document.querySelector('.container-xl:not(.d-flex):not(.clearfix)');
+        if (container) {
+            // Find the star button
+            let starBtn = container.querySelector('div[data-view-component="true"].js-toggler-container.starring-container');
+            if (starBtn && starBtn.parentElement) {
+                // Avoid duplicate insertion
+                let oldBtn = starBtn.parentElement.querySelector('.gh-note-btn');
+                if (oldBtn) oldBtn.remove();
+                let newBtn = btn2;
+                newBtn.classList.add('gh-note-btn');
+                starBtn.parentElement.appendChild(newBtn);
+            }
+        }
 
         // Note display
-        let oldNoteDiv = document.querySelector('.gh-note-display');
-        if (oldNoteDiv) oldNoteDiv.remove();
-        
         if (note) {
+            // Create the first note display
             let noteDiv = createNoteDisplay(note);
             noteDiv.classList.add('gh-note-display');
+
+            // Remove the old note display
+            let oldNoteDiv = document.querySelector('.gh-note-display');
+            if (oldNoteDiv) oldNoteDiv.remove();
             
             // Find the description
             let description = document.querySelector('.f4.my-3, .f4.my-3.color-fg-muted.text-italic');
             if (description && description.parentElement) {
                 description.parentElement.insertBefore(noteDiv, description.nextSibling);
+            }
+
+            // Create the second note display
+            let noteDiv2 = createNoteDisplay(note);
+            noteDiv2.classList.add('gh-note-display2');
+
+            // Remove the old note display
+            let oldNoteDiv2 = document.querySelector('.gh-note-display2');
+            if (oldNoteDiv2) oldNoteDiv2.remove();
+
+            if (container) {
+                // Try finding the description
+                let newDescription = container.querySelector('p.f4.mb-3.color-fg-muted');
+                if (newDescription && newDescription.parentElement) {
+                    newDescription.parentElement.insertBefore(noteDiv2, newDescription.nextSibling);
+                } else {
+                    // If there is no description, find the flex container
+                    let flexContainer = container.querySelector('div.d-flex.gap-2.mt-n3.mb-3.flex-wrap');
+                    if (flexContainer && flexContainer.parentElement) {
+                        flexContainer.parentElement.insertBefore(noteDiv2, flexContainer.nextSibling);
+                    }
+                }
             }
         }
     }
