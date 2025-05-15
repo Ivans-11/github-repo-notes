@@ -3,8 +3,8 @@
 // @name:zh-CN   GitHub 仓库备注工具
 // @namespace    http://tampermonkey.net/
 // @version      1.3
-// @description  Add local notes to GitHub repository
-// @description:zh-CN  为 GitHub 仓库添加本地备注
+// @description  Add local notes to GitHub repository, support data export and import
+// @description:zh-CN  为 GitHub 仓库添加本地备注，支持数据导出和导入
 // @author       Ivans
 // @match        https://github.com/*
 // @grant        GM_setValue
