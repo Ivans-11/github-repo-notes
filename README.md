@@ -12,6 +12,7 @@ A Tampermonkey script that allows you to add local notes to GitHub repositories
 
 - Add and modify notes for repositories in GitHub repository list or detail pages
 - Notes are saved in local storage and invisible to other users
+- Import and export note data using the floating button at the bottom right of the page
 
 ## Installation
 
@@ -40,5 +41,5 @@ A Tampermonkey script that allows you to add local notes to GitHub repositories
 ## Notes
 
 - Note data is saved in browser's local storage
-- Clearing browser data will result in data loss
-- Notes are not synchronized between different browsers
+- Clearing browser data will result in data loss, you can use export and import feature to backup
+- Notes are not synchronized between different browsers, you can use export and import feature to sync between browsers

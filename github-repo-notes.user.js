@@ -2,7 +2,7 @@
 // @name         GitHub Repo Notes
 // @name:zh-CN   GitHub 仓库备注工具
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  Add local notes to GitHub repository
 // @description:zh-CN  为 GitHub 仓库添加本地备注
 // @author       Ivans
@@ -10,6 +10,7 @@
 // @grant        none
 // @icon         https://cdn.simpleicons.org/github/808080
 // @license      MIT
+// @supportURL   https://github.com/Ivans-11/github-repo-notes/issues
 // @downloadURL  https://update.greasyfork.org/scripts/535967/GitHub%20Repo%20Notes.user.js
 // @updateURL    https://update.greasyfork.org/scripts/535967/GitHub%20Repo%20Notes.meta.js
 // ==/UserScript==
@@ -270,6 +271,140 @@
         }
     }
 
+    // Export notes data
+    function exportNotes() {
+        const notes = {};
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key.startsWith(NOTE_KEY_PREFIX)) {
+                notes[key] = localStorage.getItem(key);
+            }
+        }
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(notes));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "github_repo_notes.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    }
+
+    // Import notes data
+    function importNotes() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        input.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const notes = JSON.parse(event.target.result);
+                        for (const key in notes) {
+                            if (notes.hasOwnProperty(key) && key.startsWith(NOTE_KEY_PREFIX)) {
+                                localStorage.setItem(key, notes[key]);
+                            }
+                        }
+                        alert('Import successfully!');
+                        enhanceAll();
+                    } catch (error) {
+                        alert('Error:' + error.message);
+                    }
+                };
+                reader.readAsText(file);
+            }
+        };
+        input.click();
+    }
+
+    // Clear all notes data
+    function clearNotes() {
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key.startsWith(NOTE_KEY_PREFIX)) {
+                localStorage.removeItem(key);
+            }
+        }
+    }
+
+    // Create the floating button
+    function createFloatingButton(text, onClick) {
+        const btn = document.createElement('button');
+        btn.textContent = text;
+        btn.style.margin = '5px';
+        btn.style.borderRadius = '6px';
+        btn.style.backgroundColor = 'var(--button-default-bgColor-rest, var(--color-btn-bg))';
+        btn.style.color = 'var(--button-default-fgColor-rest, var(--color-btn-text))';
+        btn.style.border = '1px solid var(--button-default-borderColor-rest,var(--color-btn-border))';
+        btn.addEventListener('click', onClick);
+        return btn;
+    }
+
+    // Create the bottom floating button
+    function createBottomButton() {
+        if (document.querySelector('.gh-import-export-btn')) return; // Avoid duplicate
+        const bottomBtn = document.createElement('button');
+        bottomBtn.textContent = '☰';
+        bottomBtn.classList.add('gh-import-export-btn');
+        bottomBtn.style.position = 'fixed';
+        bottomBtn.style.bottom = '20px';
+        bottomBtn.style.right = '20px';
+        bottomBtn.style.zIndex = '1000';
+        bottomBtn.style.padding = '10px 20px';
+        bottomBtn.style.backgroundColor = 'var(--button-default-bgColor-rest, var(--color-btn-bg))';
+        bottomBtn.style.color = 'var(--button-default-fgColor-rest, var(--color-btn-text))';
+        bottomBtn.style.border = '1px solid var(--button-default-borderColor-rest,var(--color-btn-border))';
+        bottomBtn.style.borderRadius = '50%';
+        bottomBtn.style.fontSize = '14px';
+        bottomBtn.style.cursor = 'pointer';
+        bottomBtn.addEventListener('click', () => {
+            if (document.querySelector('.gh-import-export-dialog')) {
+                document.querySelector('.gh-import-export-dialog').remove();
+                bottomBtn.textContent = '☰';
+                bottomBtn.style.borderRadius = '50%';
+                return;
+            }
+
+            // Expand the button
+            bottomBtn.textContent = 'Import/Export notes data';
+            bottomBtn.style.borderRadius = '8px';
+
+            // Create the dialog
+            const dialog = document.createElement('div');
+            dialog.classList.add('gh-import-export-dialog');
+            dialog.style.position = 'fixed';
+            dialog.style.bottom = '60px';
+            dialog.style.right = '20px';
+            dialog.style.backgroundColor = 'rgba(255, 255, 255, 0)';
+            dialog.style.border = 'none';
+            dialog.style.padding = '10px';
+            dialog.style.zIndex = '1001';
+
+            const exportBtn = createFloatingButton('Export', () => {
+                exportNotes();
+                dialog.remove();
+            });
+
+            const importBtn = createFloatingButton('Import', () => {
+                importNotes();
+                dialog.remove();
+            });
+
+            const clearBtn = createFloatingButton('Clear', () => {
+                if (!confirm('Are you sure you want to clear all notes?')) return;
+                clearNotes();
+                dialog.remove();
+            });
+
+            dialog.appendChild(exportBtn);
+            dialog.appendChild(importBtn);
+            dialog.appendChild(clearBtn);
+            document.body.appendChild(dialog);
+        });
+        document.body.appendChild(bottomBtn);
+    }
+
     // Initial processing
     function enhanceAll() {
         if (isRepoPage()) {
@@ -277,6 +412,7 @@
         } else {
             findAllRepoCards().forEach(enhanceCard);
         }
+        createBottomButton();
     }
 
     // Listen for DOM changes to adapt to dynamic loading
