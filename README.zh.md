@@ -1,5 +1,7 @@
 中文 | [English](README.md)
 
+由于经常忘记自己为什么会Star某个仓库，所以写了这个脚本，给github仓库添加私有备注。当然，不仅限于star的仓库，该脚本可以为任何脚本添加备注。
+
 # GitHub Repo Notes
 
 一个可以为GitHub仓库添加本地备注的油猴脚本

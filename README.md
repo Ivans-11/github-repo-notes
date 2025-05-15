@@ -1,5 +1,9 @@
 [中文](README.zh.md) | English
 
+Ever starred a GitHub repo and forgot why?
+
+This script lets you add private notes to any repository — whether you starred it or not and whoever it belongs to.
+
 # GitHub Repo Notes
 
 A Tampermonkey script that allows you to add local notes to GitHub repositories
