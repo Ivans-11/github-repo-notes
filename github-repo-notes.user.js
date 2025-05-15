@@ -389,17 +389,23 @@
             const exportBtn = createFloatingButton('Export', () => {
                 exportNotes();
                 dialog.remove();
+                bottomBtn.textContent = '☰';
+                bottomBtn.style.borderRadius = '50%';
             });
 
             const importBtn = createFloatingButton('Import', () => {
                 importNotes();
                 dialog.remove();
+                bottomBtn.textContent = '☰';
+                bottomBtn.style.borderRadius = '50%';
             });
 
             const clearBtn = createFloatingButton('Clear', () => {
                 if (!confirm('Are you sure you want to clear all notes?')) return;
                 clearNotes();
                 dialog.remove();
+                bottomBtn.textContent = '☰';
+                bottomBtn.style.borderRadius = '50%';
             });
 
             dialog.appendChild(exportBtn);
