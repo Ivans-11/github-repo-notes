@@ -2,12 +2,15 @@
 // @name         GitHub Repo Notes
 // @name:zh-CN   GitHub 仓库备注工具
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.3
 // @description  Add local notes to GitHub repository
 // @description:zh-CN  为 GitHub 仓库添加本地备注
 // @author       Ivans
 // @match        https://github.com/*
-// @grant        none
+// @grant        GM_setValue
+// @grant        GM_getValue
+// @grant        GM_deleteValue
+// @grant        GM_listValues
 // @icon         https://cdn.simpleicons.org/github/808080
 // @license      MIT
 // @supportURL   https://github.com/Ivans-11/github-repo-notes/issues
@@ -35,14 +38,14 @@
     // Get the note from local storage
     function getNote(repoFullName) {
         // Convert to lowercase
-        return localStorage.getItem(NOTE_KEY_PREFIX + repoFullName.toLowerCase()) || '';
+        return GM_getValue(NOTE_KEY_PREFIX + repoFullName.toLowerCase(), '');
     }
     // Set the note to local storage
     function setNote(repoFullName, note) {
         if (note) {
-            localStorage.setItem(NOTE_KEY_PREFIX + repoFullName.toLowerCase(), note);
+            GM_setValue(NOTE_KEY_PREFIX + repoFullName.toLowerCase(), note);
         } else {
-            localStorage.removeItem(NOTE_KEY_PREFIX + repoFullName.toLowerCase());
+            GM_deleteValue(NOTE_KEY_PREFIX + repoFullName.toLowerCase());
         }
     }
 
@@ -274,10 +277,11 @@
     // Export notes data
     function exportNotes() {
         const notes = {};
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
+        const keys = GM_listValues();
+        for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
             if (key.startsWith(NOTE_KEY_PREFIX)) {
-                notes[key] = localStorage.getItem(key);
+                notes[key] = GM_getValue(key);
             }
         }
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(notes));
@@ -303,7 +307,7 @@
                         const notes = JSON.parse(event.target.result);
                         for (const key in notes) {
                             if (notes.hasOwnProperty(key) && key.startsWith(NOTE_KEY_PREFIX)) {
-                                localStorage.setItem(key, notes[key]);
+                                GM_setValue(key, notes[key]);
                             }
                         }
                         alert('Import successfully!');
@@ -320,10 +324,11 @@
 
     // Clear all notes data
     function clearNotes() {
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
+        const keys = GM_listValues();
+        for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
             if (key.startsWith(NOTE_KEY_PREFIX)) {
-                localStorage.removeItem(key);
+                GM_deleteValue(key);
             }
         }
     }
